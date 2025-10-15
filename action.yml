@@ -1,0 +1,19 @@
+name: Oasis CLI
+description: Oasis CLI for interacting with the Oasis Network
+author: Oasis Protocol Foundation
+
+# Add your action's branding here. This will appear on the GitHub Marketplace.
+branding:
+  icon: heart
+  color: red
+
+# Define your inputs here.
+inputs:
+  version:
+    description: Oasis CLI version
+    required: true
+    default: '0.16.0'
+
+runs:
+  using: node24
+  main: dist/index.js
