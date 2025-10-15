@@ -4,20 +4,6 @@ import { wait } from './wait.js'
 const core = require('@actions/core');
 const tc = require('@actions/tool-cache');
 
-async function setup() {
-  // Get version of tool to be installed
-  const version = core.getInput('version');
-
-  // Download the specific version of the tool, e.g. as a tarball
-  const pathToTarball = await tc.downloadTool(getDownloadURL());
-
-  // Extract the tarball onto the runner
-  const pathToCLI = await tc.extractTar(pathToTarball);
-
-  // Expose the tool by adding it to the PATH
-  core.addPath(pathToCLI)
-}
-
 module.exports = setup
 
 /**
@@ -27,18 +13,21 @@ module.exports = setup
  */
 export async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-
-    // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Waiting ${ms} milliseconds ...`)
-
     // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const version = core.getInput('version');
+    core.debug(`Setting up Oasis CLI version: ${version} ...`)
+
+    // Download the specific version of the tool, e.g. as a tarball
+    const pathToTarball = await tc.downloadTool(`https://github.com/oasisprotocol/cli/releases/download/v${version}/oasis_cli_${version}_linux_amd64.tar.gz`);
+
+    // Extract the tarball onto the runner
+    const pathToCLI = await tc.extractTar(pathToTarball);
+
+    // Expose the tool by adding it to the PATH
+    core.addPath(pathToCLI)
 
     // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
+    core.debug(`Oasis CLI version: ${version} ready to use.`)
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message)
