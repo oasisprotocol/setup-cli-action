@@ -29816,7 +29816,6 @@ function requireToolCache () {
 
 var toolCacheExports = requireToolCache();
 
-module.exports = setup;
 /**
  * The main function for the action.
  *
