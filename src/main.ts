@@ -1,6 +1,4 @@
 import * as core from '@actions/core'
-
-import * as core from '@actions/core'
 import * as tc from '@actions/tool-cache'
 
 module.exports = setup
