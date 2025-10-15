@@ -1,5 +1,4 @@
 import * as core from '@actions/core'
-import { wait } from './wait.js'
 
 const core = require('@actions/core');
 const tc = require('@actions/tool-cache');
@@ -13,7 +12,6 @@ module.exports = setup
  */
 export async function run(): Promise<void> {
   try {
-    // Log the current timestamp, wait, then log the new timestamp
     const version = core.getInput('version');
     core.debug(`Setting up Oasis CLI version: ${version} ...`)
 
@@ -26,7 +24,6 @@ export async function run(): Promise<void> {
     // Expose the tool by adding it to the PATH
     core.addPath(pathToCLI)
 
-    // Set outputs for other workflow steps to use
     core.debug(`Oasis CLI version: ${version} ready to use.`)
   } catch (error) {
     // Fail the workflow run if an error occurs
