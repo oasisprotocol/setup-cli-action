@@ -24,7 +24,7 @@ export async function run(): Promise<void> {
     const pathToCLI = await tc.extractTar(pathToTarball);
 
     // Expose the tool by adding it to the PATH
-    core.addPath(pathToCLI)
+    core.addPath(pathToCLI+`/oasis_cli_${version}_linux_amd64`)
 
     // Set outputs for other workflow steps to use
     core.debug(`Oasis CLI version: ${version} ready to use.`)
