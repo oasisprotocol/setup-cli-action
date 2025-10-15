@@ -29830,7 +29830,7 @@ async function run() {
         // Extract the tarball onto the runner
         const pathToCLI = await toolCacheExports.extractTar(pathToTarball);
         // Expose the tool by adding it to the PATH
-        coreExports.addPath(pathToCLI);
+        coreExports.addPath(`${pathToCLI}/oasis_cli_${version}_linux_amd64`);
         coreExports.debug(`Oasis CLI version: ${version} ready to use.`);
     }
     catch (error) {
