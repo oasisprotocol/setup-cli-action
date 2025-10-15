@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 
-const core = require('@actions/core');
-const tc = require('@actions/tool-cache');
+import * as core from '@actions/core'
+import * as tc from '@actions/tool-cache'
 
 module.exports = setup
 
@@ -12,14 +12,16 @@ module.exports = setup
  */
 export async function run(): Promise<void> {
   try {
-    const version = core.getInput('version');
+    const version = core.getInput('version')
     core.debug(`Setting up Oasis CLI version: ${version} ...`)
 
     // Download the specific version of the tool, e.g. as a tarball
-    const pathToTarball = await tc.downloadTool(`https://github.com/oasisprotocol/cli/releases/download/v${version}/oasis_cli_${version}_linux_amd64.tar.gz`);
+    const pathToTarball = await tc.downloadTool(
+      `https://github.com/oasisprotocol/cli/releases/download/v${version}/oasis_cli_${version}_linux_amd64.tar.gz`
+    )
 
     // Extract the tarball onto the runner
-    const pathToCLI = await tc.extractTar(pathToTarball);
+    const pathToCLI = await tc.extractTar(pathToTarball)
 
     // Expose the tool by adding it to the PATH
     core.addPath(pathToCLI)
