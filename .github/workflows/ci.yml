@@ -60,9 +60,7 @@ jobs:
           version: 0.16.0
 
       - name: Print output
-        id: output
         run: oasis --version
 
       - name: Print another output
-        id: output
         run: oasis --version
