@@ -3,10 +3,10 @@ name: Continuous Integration
 on:
   pull_request:
     branches:
-      - main
+      - master
   push:
     branches:
-      - main
+      - master
 
 permissions:
   contents: read
@@ -59,10 +59,10 @@ jobs:
         with:
           version: 0.16.0
 
-      - name: Print Output
+      - name: Print output
         id: output
         run: oasis --version
 
-      - name: Print Output
+      - name: Print another output
         id: output
         run: oasis --version
