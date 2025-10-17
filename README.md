@@ -21,3 +21,15 @@ validator data
 - Transaction Signing: Safely sign and submit on-chain transactions
 - Configuration Profiles: Manage multiple network environments (mainnet,
 testnet, localnet)
+
+## License
+
+This project is licensed under the Apache License 2.0. See the
+[LICENSE](LICENSE) file for details.
+
+This project is a fork of [GitHub Actions TypeScript template], which was
+licensed under the MIT License. The original license and copyright notice are
+preserved in the [LICENSE-MIT](LICENSE-MIT) file.
+
+[GitHub Actions TypeScript template]:
+  https://github.com/actions/typescript-action
