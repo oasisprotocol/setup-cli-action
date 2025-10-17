@@ -1,26 +1,35 @@
-# Oasis CLI GitHub action
+# Oasis CLI GitHub Action
 
-A GitHub Action to install and run the Oasis CLI (command-line interface) within
-your workflows, enabling seamless interaction with the Oasis Network from CI/CD
+A GitHub Action to install and run the [Oasis CLI] within your workflows,
+enabling seamless interaction with the [Oasis] technologies from your CI/CD
 pipelines.
 
-# Oasis CLI
+[Oasis CLI]: https://docs.oasis.io/build/tools/cli/
+[Oasis]: https://oasis.net/
+
+## Usage
+
+To use the Oasis CLI GitHub Action, just add the following to your GitHub
+Actions workflow:
+
+```yaml
+steps:
+  - name: Setup Oasis CLI
+    uses: oasisprotocol/setup-cli-action
+```
+
+## About Oasis CLI
 
 The Oasis CLI is a powerful command-line tool for interacting with the Oasis
-Network, enabling developers, validators, and users to manage accounts, deploy
-smart contracts, query network data, and perform blockchain operations
-efficiently from the terminal.
+network, including [Oasis Sapphire], enabling developers, validators, and users
+to manage accounts, deploy smart contracts, query network data, and perform
+blockchain operations efficiently from the terminal.
 
-## 🔧 Key Features
+It also support creating, building and deploying your application inside
+[Oasis ROFL], the Oasis trusted execution environment.
 
-- Account Management: Create, import, and manage Oasis accounts and wallets
-- Smart Contract Tools: Build, deploy, and interact with contracts on the
-Sapphire.
-- Network Queries: Retrieve chain information, balances, transactions, and
-validator data
-- Transaction Signing: Safely sign and submit on-chain transactions
-- Configuration Profiles: Manage multiple network environments (mainnet,
-testnet, localnet)
+[Oasis Sapphire]: https://docs.oasis.io/build/sapphire/
+[Oasis ROFL]: https://docs.oasis.io/build/rofl/
 
 ## License
 
