@@ -1,4 +1,5 @@
-import require$$0 from 'os';
+import * as require$$0 from 'os';
+import require$$0__default from 'os';
 import require$$0$1 from 'crypto';
 import require$$1 from 'fs';
 import require$$1$5 from 'path';
@@ -113,7 +114,7 @@ function requireCommand () {
 	};
 	Object.defineProperty(command, "__esModule", { value: true });
 	command.issue = command.issueCommand = void 0;
-	const os = __importStar(require$$0);
+	const os = __importStar(require$$0__default);
 	const utils_1 = requireUtils$1();
 	/**
 	 * Commands
@@ -223,7 +224,7 @@ function requireFileCommand () {
 	/* eslint-disable @typescript-eslint/no-explicit-any */
 	const crypto = __importStar(require$$0$1);
 	const fs = __importStar(require$$1);
-	const os = __importStar(require$$0);
+	const os = __importStar(require$$0__default);
 	const utils_1 = requireUtils$1();
 	function issueFileCommand(command, message) {
 	    const filePath = process.env[`GITHUB_${command}`];
@@ -25199,7 +25200,7 @@ function requireSummary () {
 		};
 		Object.defineProperty(exports, "__esModule", { value: true });
 		exports.summary = exports.markdownSummary = exports.SUMMARY_DOCS_URL = exports.SUMMARY_ENV_VAR = void 0;
-		const os_1 = require$$0;
+		const os_1 = require$$0__default;
 		const fs_1 = require$$1;
 		const { access, appendFile, writeFile } = fs_1.promises;
 		exports.SUMMARY_ENV_VAR = 'GITHUB_STEP_SUMMARY';
@@ -26088,7 +26089,7 @@ function requireToolrunner () {
 	};
 	Object.defineProperty(toolrunner, "__esModule", { value: true });
 	toolrunner.argStringToArray = toolrunner.ToolRunner = void 0;
-	const os = __importStar(require$$0);
+	const os = __importStar(require$$0__default);
 	const events = __importStar(require$$4);
 	const child = __importStar(require$$2$2);
 	const path = __importStar(require$$1$5);
@@ -26831,7 +26832,7 @@ function requirePlatform () {
 		};
 		Object.defineProperty(exports, "__esModule", { value: true });
 		exports.getDetails = exports.isLinux = exports.isMacOS = exports.isWindows = exports.arch = exports.platform = void 0;
-		const os_1 = __importDefault(require$$0);
+		const os_1 = __importDefault(require$$0__default);
 		const exec = __importStar(requireExec());
 		const getWindowsInfo = () => __awaiter(void 0, void 0, void 0, function* () {
 		    const { stdout: version } = yield exec.getExecOutput('powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Version"', undefined, {
@@ -26934,7 +26935,7 @@ function requireCore () {
 		const command_1 = requireCommand();
 		const file_command_1 = requireFileCommand();
 		const utils_1 = requireUtils$1();
-		const os = __importStar(require$$0);
+		const os = __importStar(require$$0__default);
 		const path = __importStar(require$$1$5);
 		const oidc_utils_1 = requireOidcUtils();
 		/**
@@ -28951,7 +28952,7 @@ function requireManifest () {
 		const core_1 = requireCore();
 		// needs to be require for core node modules to be mocked
 		/* eslint @typescript-eslint/no-require-imports: 0 */
-		const os = require$$0;
+		const os = require$$0__default;
 		const cp = require$$2$2;
 		const fs = require$$1;
 		function _findMatch(versionSpec, stable, candidates, archFilter) {
@@ -29185,7 +29186,7 @@ function requireToolCache () {
 	const crypto = __importStar(require$$0$1);
 	const fs = __importStar(require$$1);
 	const mm = __importStar(requireManifest());
-	const os = __importStar(require$$0);
+	const os = __importStar(require$$0__default);
 	const path = __importStar(require$$1$5);
 	const httpm = __importStar(requireLib());
 	const semver = __importStar(requireSemver());
@@ -29816,6 +29817,30 @@ function requireToolCache () {
 
 var toolCacheExports = requireToolCache();
 
+function getPlatform() {
+    const platform = require$$0.platform();
+    switch (platform) {
+        case 'linux':
+            return 'linux';
+        case 'darwin':
+            return 'darwin';
+        case 'win32':
+            return 'windows';
+        default:
+            throw new Error(`Unsupported platform: ${platform}`);
+    }
+}
+function getArchitecture() {
+    const arch = require$$0.arch();
+    switch (arch) {
+        case 'x64':
+            return 'amd64';
+        case 'arm64':
+            return 'arm64';
+        default:
+            throw new Error(`Unsupported architecture: ${arch}`);
+    }
+}
 /**
  * The main function for the action.
  *
@@ -29824,13 +29849,18 @@ var toolCacheExports = requireToolCache();
 async function run() {
     try {
         const version = coreExports.getInput('version');
-        coreExports.debug(`Setting up Oasis CLI version: ${version} ...`);
+        const platform = getPlatform();
+        const arch = getArchitecture();
+        coreExports.debug(`Setting up Oasis CLI version: ${version} for ${platform}_${arch}...`);
+        const platformArch = `${platform}_${arch}`;
+        const filename = `oasis_cli_${version}_${platformArch}.tar.gz`;
+        const downloadUrl = `https://github.com/oasisprotocol/cli/releases/download/v${version}/${filename}`;
         // Download the specific version of the tool, e.g. as a tarball
-        const pathToTarball = await toolCacheExports.downloadTool(`https://github.com/oasisprotocol/cli/releases/download/v${version}/oasis_cli_${version}_linux_amd64.tar.gz`);
+        const pathToTarball = await toolCacheExports.downloadTool(downloadUrl);
         // Extract the tarball onto the runner
         const pathToCLI = await toolCacheExports.extractTar(pathToTarball);
         // Expose the tool by adding it to the PATH
-        coreExports.addPath(`${pathToCLI}/oasis_cli_${version}_linux_amd64`);
+        coreExports.addPath(`${pathToCLI}/oasis_cli_${version}_${platformArch}`);
         coreExports.debug(`Oasis CLI version: ${version} ready to use.`);
     }
     catch (error) {
